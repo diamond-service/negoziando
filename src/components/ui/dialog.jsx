@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from "react";
 
 export function Dialog({ open, onOpenChange, children }) {
   if (!open) return null;
