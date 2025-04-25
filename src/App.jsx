@@ -7,6 +7,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ClientDashboard from "./pages/ClientDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import { RequireAuth } from "./routes/RequireAuth";
+import React from "react";
 
 export default function App() {
   return (
