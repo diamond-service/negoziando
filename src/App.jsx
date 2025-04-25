@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -7,7 +8,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ClientDashboard from "./pages/ClientDashboard";
 import { AuthProvider } from "./context/AuthContext";
 import { RequireAuth } from "./routes/RequireAuth";
-import React from "react";
 
 export default function App() {
   return (
