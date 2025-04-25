@@ -6,21 +6,21 @@ const prodottiMock = [
     nome: "Maglietta Livorno Style",
     prezzo: 25,
     descrizione: "Maglietta in cotone con stampa esclusiva.",
-    immagine: "https://via.placeholder.com/300x200?text=Maglietta",
+    immagine: "https://placehold.co/300x200?text=Maglietta",
   },
   {
     id: 2,
     nome: "Tazza personalizzata",
     prezzo: 15,
     descrizione: "Tazza in ceramica con design unico.",
-    immagine: "https://via.placeholder.com/300x200?text=Tazza",
+    immagine: "https://placehold.co/300x200?text=Tazza",
   },
   {
     id: 3,
     nome: "Zaino artigianale",
     prezzo: 45,
     descrizione: "Zaino in pelle fatto a mano.",
-    immagine: "https://via.placeholder.com/300x200?text=Zaino",
+    immagine: "https://placehold.co/300x200?text=Zaino",
   },
 ];
 
