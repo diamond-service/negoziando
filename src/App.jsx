@@ -1,48 +1,31 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VendorDashboard from "./pages/VendorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-import ClientDashboard from "./pages/ClientDashboard";
-import { AuthProvider } from "./context/AuthContext";
-import { RequireAuth } from "./routes/RequireAuth";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard-venditore"
-            element={
-              <RequireAuth>
-                <VendorDashboard />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/dashboard-admin"
-            element={
-              <RequireAuth>
-                <AdminDashboard />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/dashboard-cliente"
-            element={
-              <RequireAuth>
-                <ClientDashboard />
-              </RequireAuth>
-            }
-          />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <div className="min-h-screen flex flex-col">
+        {/* Navbar sempre visibile */}
+        <Navbar />
+
+        {/* Contenuto pagine */}
+        <main className="flex-1 container py-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/venditore/dashboard" element={<VendorDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        </main>
+
+        {/* Qui in futuro Footer */}
+      </div>
+    </Router>
   );
 }
