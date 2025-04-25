@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import React from "react";
 
 // Inserisci qui i tuoi dati
 const supabaseUrl = 'https://jcwldvnhloqeyjyosuzp.supabase.co';
