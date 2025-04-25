@@ -1,3 +1,4 @@
+import React from "react";
 export function Button({ children, onClick, className, variant = "default", size = "md", ...props }) {
   const variants = {
     default: "bg-blue-600 text-white hover:bg-blue-700",
