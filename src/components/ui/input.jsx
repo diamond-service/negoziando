@@ -1,3 +1,4 @@
+import React from "react";
 export function Input({ label, ...props }) {
   return (
     <div className="flex flex-col gap-1">
