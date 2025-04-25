@@ -1,5 +1,6 @@
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import React from "react";
 
 export default function VendorDashboard() {
   const { user, logout } = useAuth();
