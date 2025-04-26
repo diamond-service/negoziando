@@ -1,34 +1,40 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [ruolo, setRuolo] = useState("cliente"); // default cliente
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
-  
+
     if (error) {
       console.error(error.message);
       return;
     }
-  
+
     if (data.user) {
-      // Subito dopo la registrazione, crea il profilo
+      // Dopo registrazione --> crea profilo con ruolo scelto
       await supabase.from("profiles").insert([
         {
           id: data.user.id,
-          ruolo: "cliente", // oppure "venditore" se registriamo venditori
+          ruolo: ruolo,
         }
       ]);
+
+      console.log("Registrazione completata!");
+
+      // Dopo registrazione → Mandiamo a login
+      navigate("/login");
     }
-  
-    console.log("Registrazione completata!");
   };
 
   return (
@@ -63,6 +69,19 @@ export default function Register() {
               placeholder="Crea una password"
               className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
+          </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Ruolo
+            </label>
+            <select
+              value={ruolo}
+              onChange={(e) => setRuolo(e.target.value)}
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option value="cliente">Cliente</option>
+              <option value="venditore">Venditore</option>
+            </select>
           </div>
           <button
             type="submit"
