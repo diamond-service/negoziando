@@ -1,13 +1,49 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login con:", email, password);
-    // Qui puoi integrare Supabase login
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error(error.message);
+      return;
+    }
+
+    if (data.user) {
+      // Recupera profilo dell'utente
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("ruolo")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profileError) {
+        console.error(profileError.message);
+        return;
+      }
+
+      console.log("Login riuscito, ruolo:", profile.ruolo);
+
+      // Redirige in base al ruolo
+      if (profile.ruolo === "admin") {
+        navigate("/admin/dashboard");
+      } else if (profile.ruolo === "venditore") {
+        navigate("/venditore/dashboard");
+      } else {
+        navigate("/");
+      }
+    }
   };
 
   return (
