@@ -1,22 +1,40 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-
-const AuthContext = createContext();
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
-    // Quando cambia auth su Supabase
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setUser(session?.user || null);
+
+        if (session?.user) {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("ruolo")
+            .eq("id", session.user.id)
+            .single();
+
+          if (data) {
+            setRole(data.ruolo);
+          }
+        }
       }
     );
 
-    // Recupero user iniziale
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
       setUser(user);
+
+      if (user) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("ruolo")
+          .eq("id", user.id)
+          .single();
+
+        if (data) {
+          setRole(data.ruolo);
+        }
+      }
     });
 
     return () => {
@@ -25,12 +43,8 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>
+    <AuthContext.Provider value={{ user, role }}>
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
