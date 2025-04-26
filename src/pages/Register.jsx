@@ -1,82 +1,59 @@
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabaseClient';
-import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
-  const { register } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ nome: '', email: '', password: '', ruolo: 'cliente' });
-  const [error, setError] = useState(null);
-
-  const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data, error: signUpError } = await register(form.email, form.password);
-      if (signUpError) throw signUpError;
-      const { user } = data;
-      await supabase.from('users').insert({
-        id: user.id,
-        nome: form.nome,
-        email: form.email,
-        ruolo: form.ruolo,
-      });
-      navigate('/login');
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-6">
-        <h2 className="text-2xl font-bold text-center text-green-600">Registrati</h2>
-        {error && <p className="text-red-500 text-center">{error}</p>}
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome completo"
-          required
-          value={form.nome}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={form.email}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={form.password}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-        <select
-          name="ruolo"
-          value={form.ruolo}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        >
-          <option value="cliente">Cliente</option>
-          <option value="venditore">Venditore</option>
-        </select>
-        <button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded">
-          Registrati
-        </button>
-      </form>
-    </div>
+    <section className="flex justify-center items-center min-h-[70vh]">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Crea il tuo account
+        </h2>
+
+        <form className="space-y-5">
+          <div>
+            <label className="block text-gray-600 mb-1">Nome completo</label>
+            <input
+              type="text"
+              placeholder="Inserisci il tuo nome"
+              className="w-full border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-600 mb-1">Email</label>
+            <input
+              type="email"
+              placeholder="Inserisci la tua email"
+              className="w-full border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-600 mb-1">Password</label>
+            <input
+              type="password"
+              placeholder="Crea una password"
+              className="w-full border p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="button-primary w-full"
+          >
+            Registrati
+          </button>
+        </form>
+
+        <p className="text-sm text-gray-600 mt-6 text-center">
+          Hai già un account?{" "}
+          <Link
+            to="/login"
+            className="text-yellow-500 hover:underline"
+          >
+            Accedi
+          </Link>
+        </p>
+      </div>
+    </section>
   );
 }
