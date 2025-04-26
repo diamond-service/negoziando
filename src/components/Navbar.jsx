@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import Logout from "./Logout";
+import Logout from "./Logout"; // Import Logout
 
 export default function Navbar() {
-  const { user, role } = useAuth();
-
   return (
     <header className="bg-yellow-400 shadow-md">
       <div className="container flex justify-between items-center py-4">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-black">
+        <Link to="/" className="text-2xl font-bold text-black hover:opacity-80 transition">
           Negoziando Livorno
         </Link>
 
@@ -22,52 +19,47 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Menu Dinamico */}
+        {/* Menu Links */}
         <div className="flex gap-4 items-center">
-          {!user ? (
-            <>
-              <Link
-                to="/login"
-                className="text-black font-semibold hover:underline hover:text-white transition"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="text-black font-semibold hover:underline hover:text-white transition"
-              >
-                Registrati
-              </Link>
-            </>
-          ) : (
-            <>
-              {role === "venditore" && (
-                <Link
-                  to="/carrello"
-                  className="text-black font-semibold hover:underline hover:text-white transition"
-                >
-                  Carrello
-                </Link>
+          <Link
+            to="/"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Home
+          </Link>
+          <Link
+            to="/carrello"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Carrello
+          </Link>
+          <Link
+            to="/venditore/dashboard"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Dashboard Venditore
+          </Link>
+          <Link
+            to="/admin/dashboard"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Dashboard Admin
+          </Link>
+          <Link
+            to="/login"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="text-black font-semibold hover:underline hover:text-white transition"
+          >
+            Registrati
+          </Link>
 
-                <Link
-                  to="/venditore/dashboard"
-                  className="text-black font-semibold hover:underline hover:text-white transition"
-                >
-                  Dashboard Venditore
-                </Link>
-
-              )}
-              {role === "admin" && (
-                <Link
-                  to="/admin/dashboard"
-                  className="text-black font-semibold hover:underline hover:text-white transition"
-                >
-                  Dashboard Admin
-                </Link>
-              )}
-              <Logout />
-            </>
-          )}
+          {/* Logout button */}
+          <Logout />
         </div>
       </div>
     </header>
