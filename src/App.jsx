@@ -5,15 +5,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VendorDashboard from "./pages/VendorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import Footer from "./components/Footer"; // Importa Footer
 
 export default function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        {/* Navbar sempre visibile */}
         <Navbar />
-
-        {/* Contenuto pagine */}
         <main className="flex-1 container py-8">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -23,8 +21,8 @@ export default function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
           </Routes>
         </main>
-
-        {/* Qui in futuro Footer */}
+        {/* Footer aggiunto */}
+        <Footer />
       </div>
     </Router>
   );
