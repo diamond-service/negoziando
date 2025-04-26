@@ -8,6 +8,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Footer from "./components/Footer"; // Importa Footer
 import Categoria from "./pages/Categoria"; // aggiungi import
 import Prodotto from "./pages/Prodotto";
+import Carrello from "./pages/Carrello";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/categoria/:categoria" element={<Categoria />} />
             <Route path="/prodotto/:id" element={<Prodotto />} />
+            <Route path="/carrello" element={<Carrello />} />
           </Routes>
         </main>
         {/* Footer aggiunto */}
