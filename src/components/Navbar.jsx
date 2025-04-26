@@ -43,6 +43,13 @@ export default function Navbar() {
             <>
               {role === "venditore" && (
                 <Link
+                  to="/carrello"
+                  className="text-black font-semibold hover:underline hover:text-white transition"
+                >
+                  Carrello
+                </Link>
+
+                <Link
                   to="/venditore/dashboard"
                   className="text-black font-semibold hover:underline hover:text-white transition"
                 >
