@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import VendorDashboard from "./pages/VendorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Footer from "./components/Footer"; // Importa Footer
+import Categoria from "./pages/Categoria"; // aggiungi import
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/venditore/dashboard" element={<VendorDashboard />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/categoria/:categoria" element={<Categoria />} />
           </Routes>
         </main>
         {/* Footer aggiunto */}
