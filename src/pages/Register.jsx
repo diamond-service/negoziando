@@ -1,13 +1,34 @@
 import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("Registrazione con:", email, password);
-    // Qui puoi integrare Supabase sign up
+    
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+  
+    if (error) {
+      console.error(error.message);
+      return;
+    }
+  
+    if (data.user) {
+      // Subito dopo la registrazione, crea il profilo
+      await supabase.from("profiles").insert([
+        {
+          id: data.user.id,
+          ruolo: "cliente", // oppure "venditore" se registriamo venditori
+        }
+      ]);
+    }
+  
+    console.log("Registrazione completata!");
   };
 
   return (
