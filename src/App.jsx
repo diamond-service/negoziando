@@ -9,6 +9,7 @@ import Footer from "./components/Footer"; // Importa Footer
 import Categoria from "./pages/Categoria"; // aggiungi import
 import Prodotto from "./pages/Prodotto";
 import Carrello from "./pages/Carrello";
+import TestError from "./pages/TestError";
 
 export default function App() {
   return (
