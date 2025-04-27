@@ -9,13 +9,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Carica l'utente al caricamento pagina
   useEffect(() => {
-    const session = supabase.auth.getSession()
-      .then(({ data: { session } }) => {
-        setUser(session?.user || null);
-        setLoading(false);
-      });
+    async function loadUser() {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setLoading(false);
+    }
+
+    loadUser();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
@@ -26,19 +27,16 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // Funzione login
   const login = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
   };
 
-  // Funzione registrazione
   const register = async (email, password) => {
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
   };
 
-  // Funzione logout
   const logout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
@@ -51,7 +49,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// Custom Hook
 export function useAuth() {
   return useContext(AuthContext);
 }
