@@ -1,50 +1,57 @@
+// src/context/AuthContext.jsx
+
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+
+export const AuthContext = createContext();
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Carica l'utente al caricamento pagina
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+    const session = supabase.auth.getSession()
+      .then(({ data: { session } }) => {
         setUser(session?.user || null);
+        setLoading(false);
+      });
 
-        if (session?.user) {
-          const { data, error } = await supabase
-            .from("profiles")
-            .select("ruolo")
-            .eq("id", session.user.id)
-            .single();
-
-          if (data) {
-            setRole(data.ruolo);
-          }
-        }
-      }
-    );
-
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
-      setUser(user);
-
-      if (user) {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("ruolo")
-          .eq("id", user.id)
-          .single();
-
-        if (data) {
-          setRole(data.ruolo);
-        }
-      }
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
     });
 
     return () => {
-      listener?.unsubscribe();
+      listener.subscription.unsubscribe();
     };
   }, []);
 
+  // Funzione login
+  const login = async (email, password) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+  };
+
+  // Funzione registrazione
+  const register = async (email, password) => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+  };
+
+  // Funzione logout
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, role }}>
-      {children}
+    <AuthContext.Provider value={{ user, login, register, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
+}
+
+// Custom Hook
+export function useAuth() {
+  return useContext(AuthContext);
 }
