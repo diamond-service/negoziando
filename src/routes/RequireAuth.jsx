@@ -1,14 +1,18 @@
-import { useAuth } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
+// src/routes/RequireAuth.jsx
 
-export default function RequireAuth({ children, allowedRoles }) {
-  const { user, role } = useAuth();
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+
+export default function RequireAuth({ children, ruoloRichiesto }) {
+  const { user } = useContext(AuthContext);
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && !allowedRoles.includes(role)) {
+  // Se vogliamo controllare ruoli
+  if (ruoloRichiesto && user.user_metadata?.ruolo !== ruoloRichiesto) {
     return <Navigate to="/" replace />;
   }
 
