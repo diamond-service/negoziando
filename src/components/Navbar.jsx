@@ -1,19 +1,30 @@
 // src/components/Navbar.jsx
 
 import { Link } from "react-router-dom";
-import Logout from "./Logout";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Errore durante il logout:", error.message);
+    }
+  };
+
   return (
     <header className="bg-yellow-400 shadow-md">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-4 px-6">
+      <div className="container flex justify-between items-center py-4">
+        
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-black hover:opacity-80 mb-4 md:mb-0">
+        <Link to="/" className="text-2xl font-bold text-black">
           Negoziando Livorno
         </Link>
 
-        {/* Search Bar */}
-        <div className="w-full md:w-1/3 mb-4 md:mb-0">
+        {/* Barra ricerca */}
+        <div className="flex-1 mx-8">
           <input
             type="text"
             placeholder="Cerca prodotti..."
@@ -22,32 +33,36 @@ export default function Navbar() {
         </div>
 
         {/* Menu */}
-        <div className="flex items-center gap-4">
-          <Link
-            to="/"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Home
-          </Link>
-          <Link
-            to="/login"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Registrati
-          </Link>
-          <Link
-            to="/venditore/dashboard"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Dashboard
-          </Link>
-          <Logout />
+        <div className="flex gap-4 items-center">
+          {!user ? (
+            <>
+              <Link
+                to="/login"
+                className="text-black font-semibold hover:underline hover:text-white transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="text-black font-semibold hover:underline hover:text-white transition"
+              >
+                Registrati
+              </Link>
+            </>
+          ) : (
+            <>
+              {/* Mostra il nome dell'utente */}
+              <span className="font-semibold text-black">
+                {user.email}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="button-primary"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>
