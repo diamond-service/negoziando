@@ -1,54 +1,59 @@
 // src/pages/Register.jsx
 
-import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-  const { register } = useContext(AuthContext);
+  const { register } = useAuth();
   const navigate = useNavigate();
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errore, setErrore] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrore("");
+    setLoading(true);
     try {
       await register(email, password);
-      navigate("/login"); // Dopo registrazione, vai al login
+      navigate("/login");
     } catch (error) {
-      console.error("Errore di registrazione:", error.message);
+      setErrore(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto py-12">
-      <h2 className="text-3xl font-bold mb-8 text-center">Crea un nuovo account</h2>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-        <div className="mb-6">
-          <label className="block mb-2 font-semibold">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            required
-          />
-        </div>
-        <div className="mb-8">
-          <label className="block mb-2 font-semibold">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-            required
-          />
-        </div>
+    <div className="container max-w-md mx-auto mt-20 bg-white p-8 rounded-lg shadow-md">
+      <h1 className="text-3xl font-bold mb-8 text-center">Registrati</h1>
+      {errore && <div className="text-red-500 mb-4">{errore}</div>}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full p-3 border rounded-lg"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full p-3 border rounded-lg"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button
           type="submit"
-          className="w-full button-primary"
+          disabled={loading}
+          className="button-primary w-full"
         >
-          Registrati
+          {loading ? "Registrazione..." : "Registrati"}
         </button>
       </form>
     </div>
