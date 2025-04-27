@@ -1,23 +1,24 @@
-import { useAuth } from "../context/AuthContext";
-import { supabase } from "../lib/supabaseClient";
+// src/components/Logout.jsx
+
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
-  const { user } = useAuth();
+  const { logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
-    window.location.reload(); // Ricarica la pagina per aggiornare la Navbar
+    await logout();
+    navigate("/login");
   };
 
-  if (!user) return null;
+  if (!user) return null; // Se non loggato, non mostra il pulsante
 
   return (
     <button
       onClick={handleLogout}
-      className="text-black font-semibold hover:underline hover:text-white transition"
+      className="bg-black text-white px-4 py-2 rounded hover:bg-yellow-500 transition"
     >
       Logout
     </button>
