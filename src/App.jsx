@@ -18,6 +18,7 @@ export default function App() {
         <main className="flex-1 container py-8">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/test" element={<TestError />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/venditore/dashboard" element={<VendorDashboard />} />
