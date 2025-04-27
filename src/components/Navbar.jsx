@@ -1,12 +1,14 @@
+// src/components/Navbar.jsx
+
 import { Link } from "react-router-dom";
-import Logout from "./Logout"; // Import Logout
+import Logout from "./Logout";
 
 export default function Navbar() {
   return (
     <header className="bg-yellow-400 shadow-md">
-      <div className="container flex justify-between items-center py-4">
+      <div className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold text-black hover:opacity-80 transition">
+        <Link to="/" className="text-2xl font-bold text-black hover:opacity-80">
           Negoziando Livorno
         </Link>
 
@@ -19,32 +21,8 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Menu Links */}
+        {/* Menu */}
         <div className="flex gap-4 items-center">
-          <Link
-            to="/"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Home
-          </Link>
-          <Link
-            to="/carrello"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Carrello
-          </Link>
-          <Link
-            to="/venditore/dashboard"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Dashboard Venditore
-          </Link>
-          <Link
-            to="/admin/dashboard"
-            className="text-black font-semibold hover:underline hover:text-white transition"
-          >
-            Dashboard Admin
-          </Link>
           <Link
             to="/login"
             className="text-black font-semibold hover:underline hover:text-white transition"
@@ -57,8 +35,6 @@ export default function Navbar() {
           >
             Registrati
           </Link>
-
-          {/* Logout button */}
           <Logout />
         </div>
       </div>
